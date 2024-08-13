@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador de Textos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4a90e2;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        select, textarea, button {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px); /* Adjust width for padding and border */
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        textarea {
+            font-size: 16px;
+            resize: none;
+            height: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encriptador de Textos</h1>
+        <label for="operation">Selecciona operación:</label>
+        <select id="operation">
+            <option value="encrypt">Encriptar</option>
+            <option value="decrypt">Desencriptar</option>
+        </select>
+        <textarea id="inputText" placeholder="Introduce el texto aquí"></textarea>
+        <button onclick="processText()">Procesar</button>
+        <textarea id="outputText" readonly placeholder="Resultado aparecerá aquí"></textarea>
+        <button onclick="copyToClipboard()">Copiar</button>
+    </div>
+
+    <script>
+        function encrypt(text) {
+            const substitutions = {
+                'e': 'enter',
+                'i': 'imes',
+                'a': 'ai',
+                'o': 'ober',
+                'u': 'ufat'
+            };
+            return text.split('').map(char => substitutions[char] || char).join('');
+        }
+
+        function decrypt(text) {
+            const substitutions = {
+                'enter': 'e',
+                'imes': 'i',
+                'ai': 'a',
+                'ober': 'o',
+                'ufat': 'u'
+            };
+            let result = text;
+            for (const [key, value] of Object.entries(substitutions)) {
+                result = result.split(key).join(value);
+            }
+            return result;
+        }
+
+        function processText() {
+            const operation = document.getElementById('operation').value;
+            const inputText = document.getElementById('inputText').value;
+            let outputText;
+            
+            if (operation === 'encrypt') {
+                outputText = encrypt(inputText);
+            } else {
+                outputText = decrypt(inputText);
+            }
+
+            document.getElementById('outputText').value = outputText;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+        }
+    </script>
+</body>
+</html>
